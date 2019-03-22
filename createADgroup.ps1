@@ -16,7 +16,7 @@ Set-Location -Path \\avo\temp\Greg
 $homeFolders = Get-ChildItem \\avo\temp\Greg -Directory
 foreach ($homeFolder in $homeFolders) {
 
-$colrights = [System.Security.AccessControl.FileSystemRights]"Modify"
+$colrightsmod = [System.Security.AccessControl.FileSystemRights]"Modify"
 
 $inheritanceFlag = [System.Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit"
 $PropagationFlag = [System.Security.AccessControl.PropagationFlags]::None
@@ -25,27 +25,22 @@ $objtype =[System.Security.AccessControl.AccessControlType]::Allow
 
 $secgroup = New-Object System.Security.Principal.NTAccount("fnba.com\$homeFolder -Modify")
                                                                                  
-$objACE = New-Object System.Security.AccessControl.FileSystemAccessRule  ($secgroup, $colrights, $inheritanceFlag, $PropagationFlag, $objtype)
-$objacl = Get-Acl "\\avo\temp\Greg\$homefolder"  
-$objacl.AddAccessRule($objACE)
+$objACEmod = New-Object System.Security.AccessControl.FileSystemAccessRule  ($secgroup, $colrightsmod, $inheritanceFlag, $PropagationFlag, $objtype)
+$objacl = Get-Acl "\\avo\temp\Greg\$homefolder"
+$objacl.AddAccessRule($objACEmod)
 
 (get-item $homeFolder).SetAccessControl($objacl)  
 }
 
 foreach ($homeFolder in $homeFolders) {
 
-$colrights = [System.Security.AccessControl.FileSystemRights]"read"
-
-$inheritanceFlag = [System.Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit"
-$PropagationFlag = [System.Security.AccessControl.PropagationFlags]::None
-
-$objtype =[System.Security.AccessControl.AccessControlType]::Allow
+$colrightsread = [System.Security.AccessControl.FileSystemRights]"read"
 
 $secgroup = New-Object System.Security.Principal.NTAccount("FNBA.com\$homeFolder -Read Only")
                                                                                  
-$objACE = New-Object System.Security.AccessControl.FileSystemAccessRule  ($secgroup, $colrights, $inheritanceFlag, $PropagationFlag, $objtype)
+$objACEread = New-Object System.Security.AccessControl.FileSystemAccessRule  ($secgroup, $colrightsread, $inheritanceFlag, $PropagationFlag, $objtype)
 $objacl = Get-Acl "\\avo\temp\Greg\$homefolder"  
-$objacl.AddAccessRule($objACE)
+$objacl.AddAccessRule($objACEread)
 
 (get-item $homeFolder).SetAccessControl($objacl)
 } 
