@@ -1,8 +1,8 @@
 # Folder-AD-Groups
-Powershell script to create AD groups for Folders
+Powershell script to create AD security groups for Folders.
 
-Script scans a directory and creates two AD groups for every folder there. One group is for 'modify' rights, one group for 'read only' rights
+Input the location of your folders plus some other info and the script will go through and create AD groups for each of them. It creates two groups for each: a modify group and a read-only group.
 
-The script then alters the ACLs of the folders to align with the newly created AD groups.
+The script will then assign the proper rights the the folders so that the modify group has modify rights and the read-only group has read-only rights.
 
 
